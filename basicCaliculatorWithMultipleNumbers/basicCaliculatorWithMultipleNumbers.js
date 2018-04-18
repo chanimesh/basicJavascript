@@ -13,9 +13,9 @@ if(!Array.isArray(numbers) || !numbers.every(isNumeric))
 
  switch(operation){
    case "+":
-     return  numbers.reduce(function totalSum(sum,value) { return sum + value });
+     return  numbers.reduce(function totalSum(sum,value) { return sum + value }, 0);
    case "-":
-     return  numbers.reduce(function totalDifference(difference, value){ return difference - value })
+     return  numbers.reduce(function totalDifference(difference, value){ return difference - value }, 0)
    case "/":
      return "we don't support division yet";
    case "X":
