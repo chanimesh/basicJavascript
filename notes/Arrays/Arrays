@@ -2,3 +2,34 @@ Reference https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Glob
 
 checking if given variable is an array use isArray
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
+
+
+Array.copyWithin(target, start, end)
+This copies the array to itself,
+the target is where it should start copying from,
+start and end are what parts of the array to copy ie subset of the array to copy
+end is excluded
+the array is modified
+
+
+Array.fill(value, start, end)
+fills the array with value from start to end
+
+Array.pop()
+removes last value from the array
+
+Array.sort(compareFunction)
+compare function should take two parameters and return either -1,0,1
+sort compares all the values based on the sort function like
+if a, b are the two parameters then if function returns
+-1 then it assumes a>b
+0 a== b
+1 a<b
+this updates the array
+
+
+Array.splice(start, number , item1, item2 ...)
+splice starts from start and removes the number  of items from the array and add the item1, item2 ... there
+
+Array.unshift()
+add elements to the beginning of array just like push but reverse
