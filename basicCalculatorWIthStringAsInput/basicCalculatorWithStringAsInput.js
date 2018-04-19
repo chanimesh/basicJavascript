@@ -1,0 +1,4 @@
+function basicCalculatorWithStringAsInput(string) {
+   operations = ["+","-","*","/"];
+
+}
