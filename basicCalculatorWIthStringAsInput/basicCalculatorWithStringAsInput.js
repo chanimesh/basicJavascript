@@ -86,8 +86,8 @@ function checkForBrackets(string)
 
 
 
-let testString = ' ((2 + 3) x (8 - 4) / 10) ';
+let testString = ' (2 + 3) x ((8 - 4) / 10) ';
 
 let fullResult = checkForBrackets(testString);
 
-console.log(fullResult);
+console.log(basicCalculatorWithStringAsInput(fullResult));
