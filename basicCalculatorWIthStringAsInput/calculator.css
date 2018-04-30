@@ -1,0 +1,17 @@
+.calculator-outer {
+    width: 200px;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.btn{
+    width: 45px;
+    height: 25px;
+    margin: 3px 1px 2px 1px;
+}
+
+.text-box{
+    width: 200px;
+}

@@ -2,10 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Basic Calculator</title>
     <script src="basicCalculatorWithStringAsInput.js"></script>
+    <script src="uiActions.js"></script>
+    <link rel="stylesheet" type="text/css" href="calculator.css" media="screen" />
 </head>
 <body>
-
+<div class="calculator-outer">
+    <div class="text-box-rack">
+        <input id="expression-text" class="text-box" type="text"  >
+        <input id="result-text" class="text-box" type="text" disabled  >
+    </div>
+    <div class="buttons-rack">
+        <input id="cancel-btn" class="btn" type="button" value="C">
+        <input id="bracket-open-btn" class="btn" type="button" value="(">
+        <input id="bracket-close-btn" class="btn" type="button" value=")">
+        <input id="backspace-btn" class="btn" type="button" value="<=">
+        <input id="one-btn" class="btn" type="button" value="1">
+        <input id="two-btn" class="btn" type="button" value="2">
+        <input id="three-btn" class="btn" type="button" value="3">
+        <input id="sum-btn" class="btn" type="button" value="+">
+        <input id="four-btn" class="btn" type="button" value="4">
+        <input id="five-btn" class="btn" type="button" value="5">
+        <input id="six-btn" class="btn" type="button" value="6">
+        <input id="difference-btn" class="btn" type="button" value="-">
+        <input id="seven-btn" class="btn" type="button" value="7">
+        <input id="eight-btn" class="btn" type="button" value="8">
+        <input id="nine-btn" class="btn" type="button" value="9">
+        <input id="product-btn" class="btn" type="button" value="x">
+        <input id="zero-btn" class="btn" type="button" value="0">
+        <input id="point-btn" class="btn" type="button" value=".">
+        <input id="equal-btn" class="btn" type="button" value="=">
+        <input id="division-btn" class="btn" type="button" value="/">
+    </div>
+</div>
 </body>
 </html>
