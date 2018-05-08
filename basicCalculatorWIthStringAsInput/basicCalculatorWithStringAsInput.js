@@ -1,3 +1,6 @@
+function prepareString(string) {
+    return string.toLowerCase().replace(/\s/g,'');
+}
 function performOperation(firstValue,secondValue,operation) {
 
     switch(operation){
@@ -8,33 +11,64 @@ function performOperation(firstValue,secondValue,operation) {
             result =  firstValue - secondValue;
             break;
         case "/":
-            result = secondValue != 0 ? firstValue/secondValue : "Infinite";
+            result = firstValue/secondValue;
             break;
         case "x":
             result = firstValue * secondValue;
             break;
+        default :
+            throw ('Wrong operation');
     }
 
     return result;
 }
 
 function getNumbersFromStrings(string1, string2, operation) {
-    string1 = string1.trim();
-    string2 = string2.trim();
 
-    let endNumberRegex = /\d[\.\d]*$/;
-    let firstNumberRegex = /^\d[\.\d]*/;
+    let endNumberRegex = /-?\d*\.?\d+$/;
+    let firstNumberRegex = /^-?\d*\.?\d+/;
 
     let firstValue = parseFloat(string1.match(endNumberRegex));
     let secondValue = parseFloat(string2.match(firstNumberRegex));
-    let result = performOperation(firstValue,secondValue,operation)
 
-// TODO: need to check of characters other than digits and operations
-// TODO: handle negative results in the operations
-    const firstString = string1.replace(endNumberRegex,'');
-    const secondString = string2.replace(firstNumberRegex,'');
+    if (isNaN(firstValue) || isNaN(secondValue)) {
+        throw "Could not find numbers in the string";
+    }
+        let result = performOperation(firstValue, secondValue, operation)
 
-    return firstString + result + secondString;
+         // TODO: need to check of characters other than digits and operations
+         // TODO: handle negative results in the operations
+        const firstString = string1.replace(endNumberRegex, '');
+        const secondString = string2.replace(firstNumberRegex, '');
+
+
+        if(firstString.match(/[x/]$/)){
+            return firstString + result.toString() + secondString;
+        }
+
+        else if (firstString.match(/[-+]$/)){
+            if(result < 0){
+                if (firstString.match(/-$/))
+                    return firstString.replace(/-$/, '+') + Math.abs(result).toString() + secondString;
+                else if (firstString.match(/\+$/))
+                    return firstString.replace(/\+$/, '') + result.toString() + secondString;
+            }
+            else {
+                    return firstString + result.toString() + secondString;
+            }
+
+        }
+
+        else if (result < 0 || firstString === '') {
+            return firstString + result.toString() + secondString;
+        }
+    else {
+            return firstString + '+' + result.toString() + secondString;
+        }
+
+
+
+
 }
 
 function applyBodmas(string) {
@@ -49,18 +83,20 @@ function applyBodmas(string) {
        .reduce(
            function applyCurrentOperation(accumulatorString, current_operation) {
 
-       const operationsSplitArray = accumulatorString.split(current_operation);
-       if (operationsSplitArray.length == 1) {
-           return accumulatorString;
-       }
+               while(accumulatorString.split(current_operation).length > 1){
+                   const operationsSplitArray = accumulatorString.split(current_operation);
+                   try {
+                    accumulatorString = getNumbersFromStrings(operationsSplitArray[0], operationsSplitArray[1], current_operation);
+                   }
+                   catch (e) {
+                       throw('error')
+                   }
+                   operationsSplitArray.shift();
+                   operationsSplitArray.shift();
+                   if(operationsSplitArray.length > 0)
+                     accumulatorString += current_operation + operationsSplitArray.join(current_operation);
+               }
 
-       accumulatorString = operationsSplitArray.reduce(
-           function performCurrentOperation(accumilator, currentValue, currentIndex, currentArray) {
-           if (currentArray.length > currentIndex + 1)
-               accumilator += getNumbersFromStrings(currentValue, currentArray[currentIndex + 1], current_operation);
-           return accumilator
-                  },
-           '');
 
        return accumulatorString;
        },
@@ -69,17 +105,30 @@ function applyBodmas(string) {
    return operationsResult;
 }
 
-function checkForBrackets(string)
+function evaluateBrackets(string)
 {
-    const bracketsSets = string.match(/\([\d.\d\s+\-\/x]*\)/g)
+    const bracketsMatch = /\([\d.\d+\-\/x]*\)/g;
+    const bracketsSets = string.match(bracketsMatch);
 
     if(bracketsSets) {
 
         const expressionsResult = bracketsSets.map(
             function computeExpression(currentValue) {
+                if(currentValue.match(/^-\d+\.?\d*$/))
+                {
+                    return {
+                        expression: currentValue,
+                        value: currentValue.slice(1, -1),
+                    }
+                }
+                try {
                 return {
                     expression: currentValue,
                     value: applyBodmas(currentValue.slice(1, -1)),
+                }
+                }
+                catch (e) {
+                    throw ('error')
                 }
             }
         );
@@ -90,8 +139,8 @@ function checkForBrackets(string)
                 return accumulater;
             }
             , string);
-        if (bracketsReplaced.match(/\([\d.\d\s+\-\/x]*\)/g))
-            bracketsReplaced = checkForBrackets(bracketsReplaced);
+        if (bracketsReplaced.match(bracketsMatch))
+            bracketsReplaced = evaluateBrackets(bracketsReplaced);
         return bracketsReplaced;
     }
     return applyBodmas(string);
@@ -99,10 +148,24 @@ function checkForBrackets(string)
 }
 
 function basicCalculatorWithStringAsInput(string){
-    let testString = string.toLowerCase().replace(/\s/g,'');
-    const bracketsResult = checkForBrackets(testString);
-    return applyBodmas(bracketsResult);
+    let testString = prepareString(string);
+    try {
+    const bracketsResult = evaluateBrackets(testString);
+    return parseFloat(applyBodmas(bracketsResult));
+    }
+    catch (e) {
+    return 'error';
+    }
 }
 
-let testString = ' (2 + 3) X ((8 - 4) / 10) ';
-console.log(basicCalculatorWithStringAsInput(testString));
+// let testString = ' (2 + 3) X ((8 - 4) / 10) ';
+// console.log(basicCalculatorWithStringAsInput(testString));
+
+
+module.exports = {
+    performOperation,
+    getNumbersFromStrings,
+    applyBodmas,
+    evaluateBrackets,
+    basicCalculatorWithStringAsInput,
+};

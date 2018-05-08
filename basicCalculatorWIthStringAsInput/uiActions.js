@@ -81,12 +81,28 @@ function buttonClick(e) {
     updateInputString(e.target.value);
     }
 
+function validateInput(e){
+    e.preventDefault();
+    if(e.key.match(/[\(\)\d\.\s+\-\/x]/)){
+        e.target.value += e.key;
+    }
+    else if(e.keyCode == 8){
+        e.target.value = e.target.value.slice(0,-1);
+    }
+    else if(e.keyCode == 13){
+        let resultText = document.getElementById('result-text');
+        resultText.value = basicCalculatorWithStringAsInput(expressionText.value);
+    }
+}
 
 Object.keys(buttonsDetails).forEach(
     function (button_value) {
         document.getElementById(buttonsDetails[button_value].id).addEventListener("click", buttonClick);
     }
 );
+
+let expressionText = document.getElementById('expression-text');
+expressionText.addEventListener('keypress', validateInput)
 
 }
 
