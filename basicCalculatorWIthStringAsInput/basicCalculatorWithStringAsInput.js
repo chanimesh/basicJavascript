@@ -83,7 +83,7 @@ function applyBodmas(string) {
        .reduce(
            function applyCurrentOperation(accumulatorString, current_operation) {
 
-               while(accumulatorString.split(current_operation).length > 1){
+               while(accumulatorString.split(current_operation).length > 1 && accumulatorString.split(current_operation)[0]!==''){
                    const operationsSplitArray = accumulatorString.split(current_operation);
                    try {
                     accumulatorString = getNumbersFromStrings(operationsSplitArray[0], operationsSplitArray[1], current_operation);
@@ -151,7 +151,11 @@ function basicCalculatorWithStringAsInput(string){
     let testString = prepareString(string);
     try {
     const bracketsResult = evaluateBrackets(testString);
-    return parseFloat(applyBodmas(bracketsResult));
+    let result = parseFloat(applyBodmas(bracketsResult));
+    if (isNaN(result)) {
+        return "error";
+    }
+    return result;
     }
     catch (e) {
     return 'error';

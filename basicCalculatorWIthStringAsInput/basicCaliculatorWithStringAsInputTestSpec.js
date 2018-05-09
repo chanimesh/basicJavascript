@@ -82,12 +82,24 @@ describe('The evaluateBrackets ', function () {
 });
 
 describe('The basicCalculatorWithStringAsInput', function () {
-    it('should evaluate string', function () {
+    it('evaluates " (2 + 3) X ((8 - 4) / 10) " ', function () {
         const result = calc.basicCalculatorWithStringAsInput(' (2 + 3) X ((8 - 4) / 10) ');
         expect(result).toBe(2);
     });
-    it('should evaluate string', function () {
+    it('evaluates " (2 + 3) X ((4 - 8) / 10) "', function () {
         const result = calc.basicCalculatorWithStringAsInput(' (2 + 3) X ((4 - 8) / 10) ');
         expect(result).toBe(-2);
+    });
+    it('evaluates "2+3-2x3/6"', function () {
+        const result = calc.basicCalculatorWithStringAsInput('2+3-2x3/6');
+        expect(result).toBe(4);
+    });
+    it('evaluates "2+4+5-3+8"', function () {
+        const result =calc.basicCalculatorWithStringAsInput('2+4+5-3+8');
+        expect(result).toBe(16);
+    });
+    it('returns ', function () {
+        const result = calc.basicCalculatorWithStringAsInput('8x4+2-400/10');
+        expect(result).toBe(-6);
     });
 });
